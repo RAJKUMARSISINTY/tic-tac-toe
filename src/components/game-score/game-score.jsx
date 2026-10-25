@@ -1,6 +1,6 @@
 import './game-score.scss';
 
-const GameScore = ({ playerXScore, playerOScore, drawScore }) => {
+const GameScore = ({ playerXScore, playerOScore, drawScore, resetScore }) => {
   return (
     <div className="game-score">
         <h2>Game Score</h2>
@@ -16,7 +16,7 @@ const GameScore = ({ playerXScore, playerOScore, drawScore }) => {
             <span>Draw :</span>
             <span>{drawScore}</span>
         </div>
-        <button className="reset-button">Reset Score</button>
+        <button className="reset-button" onClick={resetScore}>Reset Score</button>
     </div>
   );
 };

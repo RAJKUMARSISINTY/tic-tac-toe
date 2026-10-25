@@ -1,41 +1,8 @@
-import {useState} from 'react'
 import Square from '../square/square'
-import { calculateWinner } from '../../utils/game-logic'
 import './game-board.scss'
 
-const GameBoard = () => {
-    const [squares, setSquares] = useState(Array(9).fill(null));
-    const [isXNext, setIsXNext] = useState(true);
-    const winnerInfo = calculateWinner(squares);
-    const winner = winnerInfo ? winnerInfo.winner : null;
+const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, handleSquareClick, handleGameUndo, handleGameReset }) => {
     const winningLine = winnerInfo ? winnerInfo.line : [];
-    const isDraw = !winner && squares.every(square => square !== null);
-    
-
-    const handleSquareClick = (index) => {
-        if (squares[index] || winner || isDraw) {
-            return;
-        }
-        const newSquares = squares.slice();
-        newSquares[index] = isXNext ? 'X' : 'O';
-        setSquares(newSquares);
-        setIsXNext(!isXNext);
-    }
-
-    const handleGameUndo = () => {
-        const newSquares = squares.slice();
-        const lastMoveIndex = newSquares.lastIndexOf(isXNext ? 'O' : 'X');
-        if (lastMoveIndex !== -1) {
-            newSquares[lastMoveIndex] = null;
-            setSquares(newSquares);
-            setIsXNext(!isXNext);
-        }
-    };
-
-    const handleGameReset = () => {
-        setSquares(Array(9).fill(null));
-        setIsXNext(true);
-    };
 
     let statusText;
     if (winner) {
