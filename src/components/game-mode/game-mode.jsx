@@ -1,5 +1,3 @@
-import React from 'react'
-
 const GameMode = ({ vsComputer, onSelectMode }) => {
     return (
         <div className="game-mode">

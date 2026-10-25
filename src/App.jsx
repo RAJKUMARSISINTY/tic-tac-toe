@@ -4,10 +4,10 @@ import GameHistory from './components/game-history/game-history';
 import GameScore from './components/game-score/game-score';
 import './App.scss';
 
-export default function App() {
+const App = () => {
  
   return (
-    <div className="app-container">
+    <div className="game">
       <header className="game-header">
         <h1>Tic Tac Toe</h1>
       </header>
@@ -33,3 +33,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

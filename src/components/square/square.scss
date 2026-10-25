@@ -1,5 +1,14 @@
 .square {
     height: 100px;
     width: 100px;
-    border: 1px solid #ccc;
+    border: 5px solid #000;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--winning {
+        background-color: hsl(134, 93%, 39%);
+    }
 }
+

@@ -7,9 +7,9 @@ const Square = ({ value, onClick, isWinningSquare, row, col }) => {
     return (
         <button
             type="button"
-            className={`square ${isWinningSquare ? 'winning' : ''} ${value ? value.toLowerCase() : ''}`}
+            className={`square ${isWinningSquare ? 'square--winning' : ''} ${value ? value.toLowerCase() : ''}`}
             onClick={onClick}
-            aria-label={accessibilityLabel} 
+            aria-label={accessibilityLabel}
         >
             {value}
         </button>
