@@ -19,10 +19,32 @@ const calculateWinner = (squares) => {
 };
 
 const computerLogic = (squares) =>{
-    const emptySquares = squares.map((value, index) => value === null ? index : null).filter(index => index !== null);
-    if (emptySquares.length === 0) return;
-    const randomIndex = Math.floor(Math.random() * emptySquares.length);
-    return emptySquares[randomIndex];
+    const emptyIndices = squares
+    .map((val, idx) => (val === null ? idx : null))
+    .filter(val => val !== null);
+
+    if (emptyIndices.length === 0) return null;
+
+    for (let i of emptyIndices) {
+        const boardCopy = squares.slice();
+        boardCopy[i] = 'O';
+        if (calculateWinner(boardCopy)?.winner === 'O') return i;
+    }
+
+    for (let i of emptyIndices) {
+        const boardCopy = squares.slice();
+        boardCopy[i] = 'X';
+        if (calculateWinner(boardCopy)?.winner === 'X') return i;
+    }
+
+    if (squares[4] === null) return 4;
+
+    const corners = [0, 2, 6, 8].filter(idx => squares[idx] === null);
+    if (corners.length > 0) {
+        return corners[Math.floor(Math.random() * corners.length)];
+    }
+
+    return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
 }
 
 export { calculateWinner, computerLogic };

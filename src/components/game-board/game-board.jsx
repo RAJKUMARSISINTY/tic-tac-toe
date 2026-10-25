@@ -1,5 +1,5 @@
-import Square from '../square/square'
-import './game-board.scss'
+import Square from '../square/square';
+import './game-board.scss';
 
 const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, canUndo, handleSquareClick, handleGameUndo, handleGameReset }) => {
     const winningLine = winnerInfo ? winnerInfo.line : [];
@@ -15,29 +15,42 @@ const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, canUndo, hand
 
     return (
         <div className="game-board">
-            <div className="game-status-display">
+            <div className="game-status-display" aria-live="polite" aria-atomic="true">
                 <span>{statusText}</span>
             </div>
-            <div className="game-board-grid">
+            <div className="game-board-grid" role="grid" aria-label="Tic Tac Toe Board">
                 {squares.map((value, index) => (
                     <Square
                         key={index}
                         value={value}
                         onClick={() => handleSquareClick(index)}
                         isWinningSquare={winningLine.includes(index)}
-                        row={Math.floor(index / 3)}
-                        col={index % 3}
+                        row={Math.floor(index / 3) + 1}
+                        col={(index % 3) + 1}
                     />
                 ))}
             </div>
             <div className="game-board-controls">
-                <button className='undo-button' onClick={handleGameUndo} disabled={!canUndo}>
+                <button 
+                    type="button" 
+                    className="undo-button" 
+                    onClick={handleGameUndo} 
+                    disabled={!canUndo}
+                    aria-label="Undo last move"
+                >
                     Undo
                 </button>
-                <button className='reset-button' onClick={handleGameReset}>Reset Game</button>
+                <button 
+                    type="button" 
+                    className="reset-button" 
+                    onClick={handleGameReset}
+                    aria-label="Reset current game"
+                >
+                    Reset Game
+                </button>
             </div>
         </div>
     );
-}
+};
 
 export default GameBoard;

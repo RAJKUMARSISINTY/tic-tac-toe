@@ -55,14 +55,17 @@ const App = () => {
   }
 
   const handleGameUndo = () => {
-    const stepsToUndo = vsComputer && history.length >= 2 ? 2 : 1;
-    const updatedHistory = history.slice(0, history.length - stepsToUndo);
+    if (!canUndo) return;
 
-    const newSquares = Array(9).fill(null);
-    updatedHistory.forEach(move => {
-      newSquares[move.index] = move.player;
+    const stepsToUndo = vsComputer && history.length >= 2 ? 2 : 1;
+    const movesToRemove = history.slice(-stepsToUndo);
+
+    const newSquares = squares.slice();
+    movesToRemove.forEach(move => {
+      newSquares[move.index] = null;
     });
 
+    const updatedHistory = history.slice(0, history.length - stepsToUndo);
     setSquares(newSquares);
     setHistory(updatedHistory);
     setIsXNext(updatedHistory.length % 2 === 0);
