@@ -1,18 +1,30 @@
-const GameMode = ({ vsComputer, onSelectMode }) => {
+import './game-mode.scss';
+
+const GameMode = ({ vsComputer, onModeChange }) => {
     return (
         <div className="game-mode">
-            <button
-                className={`game-mode-button ${!vsComputer ? 'active' : ''}`}
-                onClick={() => onSelectMode(false)}
+            <h2>Select Game Mode</h2>
+            <div className="game-mode-buttons"
+            role="radiogroup"
+            aria-label="Game Mode Selection"
             >
-                Dual Player
-            </button>
-            <button
-                className={`game-mode-button ${vsComputer ? 'active' : ''}`}
-                onClick={() => onSelectMode(true)}
-            >
-                Computer
-            </button>
+                <button
+                    className={`game-mode-button ${!vsComputer ? 'active' : ''}`}
+                    role="radio"
+                    aria-checked={!vsComputer}
+                    onClick={() => onModeChange('dual')}
+                >
+                    Dual Player
+                </button>
+                <button
+                    className={`game-mode-button ${vsComputer ? 'active' : ''}`}
+                    role="radio"
+                    aria-checked={vsComputer}
+                    onClick={() => onModeChange('computer')}
+                >
+                    Computer (Player O)
+                </button>
+            </div>
         </div>
     );
 }

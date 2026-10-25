@@ -3,7 +3,7 @@ import GameMode from './components/game-mode/game-mode';
 import GameBoard from './components/game-board/game-board';
 import GameHistory from './components/game-history/game-history';
 import GameScore from './components/game-score/game-score';
-import { calculateWinner } from './utils/game-logic';
+import { calculateWinner, computerLogic } from './utils/game-logic';
 import './App.scss';
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
   });
   const scoreRecordedRef = useRef(false);
   const [history, setHistory] = useState([]);
+  const canUndo = history.length > 0 && !winner && !isDraw;
 
   useEffect(() => {
     if ((winner || isDraw) && !scoreRecordedRef.current) {
@@ -54,14 +55,17 @@ const App = () => {
   }
 
   const handleGameUndo = () => {
-      const newSquares = squares.slice();
-      const lastMoveIndex = newSquares.lastIndexOf(isXNext ? 'O' : 'X');
-      if (lastMoveIndex !== -1) {
-          newSquares[lastMoveIndex] = null;
-          setSquares(newSquares);
-          setIsXNext(!isXNext);
-          setHistory(prevHistory => prevHistory.slice(0, -1));
-      }
+    const stepsToUndo = vsComputer && history.length >= 2 ? 2 : 1;
+    const updatedHistory = history.slice(0, history.length - stepsToUndo);
+
+    const newSquares = Array(9).fill(null);
+    updatedHistory.forEach(move => {
+      newSquares[move.index] = move.player;
+    });
+
+    setSquares(newSquares);
+    setHistory(updatedHistory);
+    setIsXNext(updatedHistory.length % 2 === 0);
   };
 
   const handleGameReset = () => {
@@ -77,6 +81,26 @@ const App = () => {
       handleGameReset();
   }
 
+  const [vsComputer, setVsComputer] = useState(false);
+  const handleModeChange = (mode) => {
+      const wantComputer = mode === 'computer';
+      if (wantComputer === vsComputer) return;
+      setVsComputer(wantComputer);
+      resetScore();
+  };
+
+  useEffect(() => {
+      if (vsComputer && !isXNext && !winner && !isDraw) {
+          const timer = setTimeout(() => {
+              const computerMoveIndex = computerLogic(squares);
+              if (computerMoveIndex !== undefined) {
+                  handleSquareClick(computerMoveIndex);
+              }
+          }, 700);
+          return () => clearTimeout(timer); 
+      }
+  }, [squares, isXNext, vsComputer, winner, isDraw]);
+
   return (
     <div className="game">
       <header className="game-header">
@@ -85,7 +109,10 @@ const App = () => {
 
       <main className="game-main-grid">
         <div className="game-column">
-          <GameMode />
+          <GameMode
+            vsComputer={vsComputer}
+            onModeChange={handleModeChange}
+           />
           <GameScore
             playerXScore={gameScore.playerXScore}
             playerOScore={gameScore.playerOScore}
@@ -101,6 +128,7 @@ const App = () => {
             winnerInfo={winnerInfo}
             winner={winner}
             isDraw={isDraw}
+            canUndo={canUndo}
             handleSquareClick={handleSquareClick}
             handleGameUndo={handleGameUndo}
             handleGameReset={handleGameReset}

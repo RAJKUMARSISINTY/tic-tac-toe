@@ -1,7 +1,7 @@
 import Square from '../square/square'
 import './game-board.scss'
 
-const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, handleSquareClick, handleGameUndo, handleGameReset }) => {
+const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, canUndo, handleSquareClick, handleGameUndo, handleGameReset }) => {
     const winningLine = winnerInfo ? winnerInfo.line : [];
 
     let statusText;
@@ -31,7 +31,9 @@ const GameBoard = ({ squares, isXNext, winnerInfo, winner, isDraw, handleSquareC
                 ))}
             </div>
             <div className="game-board-controls">
-                <button className='undo-button' onClick={handleGameUndo}>Undo</button>
+                <button className='undo-button' onClick={handleGameUndo} disabled={!canUndo}>
+                    Undo
+                </button>
                 <button className='reset-button' onClick={handleGameReset}>Reset Game</button>
             </div>
         </div>

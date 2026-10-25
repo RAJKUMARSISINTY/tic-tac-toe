@@ -18,4 +18,11 @@ const calculateWinner = (squares) => {
     return null;
 };
 
-export { calculateWinner };
+const computerLogic = (squares) =>{
+    const emptySquares = squares.map((value, index) => value === null ? index : null).filter(index => index !== null);
+    if (emptySquares.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * emptySquares.length);
+    return emptySquares[randomIndex];
+}
+
+export { calculateWinner, computerLogic };
