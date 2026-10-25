@@ -18,6 +18,7 @@ const App = () => {
       return savedScore ? JSON.parse(savedScore) : { playerXScore: 0, playerOScore: 0, drawScore: 0 };
   });
   const scoreRecordedRef = useRef(false);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     if ((winner || isDraw) && !scoreRecordedRef.current) {
@@ -43,9 +44,13 @@ const App = () => {
           return;
       }
       const newSquares = squares.slice();
-      newSquares[index] = isXNext ? 'X' : 'O';
+      const player = isXNext ? 'X' : 'O';
+      newSquares[index] = player;
       setSquares(newSquares);
       setIsXNext(!isXNext);
+
+      setHistory(prevHistory => [...prevHistory, {player, index}]);
+
   }
 
   const handleGameUndo = () => {
@@ -55,12 +60,14 @@ const App = () => {
           newSquares[lastMoveIndex] = null;
           setSquares(newSquares);
           setIsXNext(!isXNext);
+          setHistory(prevHistory => prevHistory.slice(0, -1));
       }
   };
 
   const handleGameReset = () => {
       setSquares(Array(9).fill(null));
       setIsXNext(true);
+      setHistory([]);
   };
 
   const resetScore = () => {
@@ -101,7 +108,9 @@ const App = () => {
         </div>
 
         <div className="game-column">
-          <GameHistory/>
+          <GameHistory
+            history={history}
+          />
         </div>
       </main>
     </div>

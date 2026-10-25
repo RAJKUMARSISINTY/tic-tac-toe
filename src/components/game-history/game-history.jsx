@@ -1,7 +1,6 @@
 import './game-history.scss';
 
-const GameHistory = () => {
-    const history = [];
+const GameHistory = ({ history }) => {
     
   return (
         <div className="game-history">
@@ -9,7 +8,7 @@ const GameHistory = () => {
             {history.length === 0 && <p>No moves made yet.</p>}
             <ul className="history-list">
                 {history.map((move, index) => (
-                    <li key={index}>Move {index + 1}: {move}</li>
+                    <li key={index}>Move {index + 1}: {move.player} at position {move.index}</li>
                 ))}
             </ul>
         </div>
